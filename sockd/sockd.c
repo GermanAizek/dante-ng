@@ -1460,7 +1460,7 @@ serverinit(argc, argv)
          case 'N': {
             char *endptr;
 
-            if ((sockscf.option.serverc = (int)strtol(optarg, &endptr, 10)) < 1
+            if ((sockscf.option.serverc = strtol(optarg, &endptr, 10)) < 1
             ||  *endptr != NUL)
                serr("%s: illegal value for -%c option: %s.  "
                     "Must be a number and greater or equal to one",
