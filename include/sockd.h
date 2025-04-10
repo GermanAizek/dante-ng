@@ -1187,19 +1187,19 @@ typedef struct {
 } sessionthrottle_t;
 
 typedef struct {
-   unsigned char max_isset;
-   size_t        max;      /*
-                            * max number of sessions allowed in total.
-                            * -1 if there is no total limit for
-                            * this object, only per-state limits.
-                            */
-
-   unsigned char throttle_isset;
    struct {
       sessionthrottle_t limit;
       struct timeval    starttime; /* time we last reset the client counter.  */
       size_t            newclients;/* new clients since we reset the counter. */
    } throttle;
+   size_t        max;      /*
+                         * max number of sessions allowed in total.
+                         * -1 if there is no total limit for
+                         * this object, only per-state limits.
+                         */
+   unsigned char max_isset;
+
+   unsigned char throttle_isset;
 
    /*
     * Same as the above, but on a per-state basis, if key is set.
@@ -1796,8 +1796,8 @@ typedef struct {
 } interfaceprotocol_t;
 
 typedef struct {
-   int                     s;           /* socket we listen on.               */
    struct sockaddr_storage addr;        /* address we listen on.              */
+   int                     s;           /* socket we listen on.               */
 
    int                     protocol;    /*
                                          * Is socket SOCKS_TCP or SOCKS_UDP?
@@ -2130,9 +2130,9 @@ typedef struct {
    unsigned char              isclientside; /* is this the clientside?        */
 
    struct {
+      int           err;            /* current errno.                         */
       unsigned char alarmdisconnectdone;
       unsigned char isconnected;    /* socket is connected?                   */
-      int           err;            /* current errno.                         */
       unsigned char fin_received;   /* received FIN on this socket?           */
       unsigned char use_saved_srule;/*
                                      * should we try to reuse last rule result
